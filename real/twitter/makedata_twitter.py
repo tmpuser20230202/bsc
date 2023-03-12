@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -105,6 +105,12 @@ else:
 
 count_od['entity1'] = [entities_dict_name2id[o] for o in count_od['entity1']]
 count_od['entity2'] = [entities_dict_name2id[o] for o in count_od['entity2']]
+
+
+# In[ ]:
+
+
+count_od = count_od.loc[(count_od['date'] >= pd.to_datetime('2014-06-01 00:00:00')) & (count_od['date'] <= pd.to_datetime('2014-07-15 23:00:00')), :]
 
 
 # In[ ]:
