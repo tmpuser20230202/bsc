@@ -8,6 +8,7 @@ import glob
 import tqdm
 import pickle
 
+
 infile_all = 'data/real/FLIGHTLIST_20190901_20200531/df_FLIGHTLIST_all.pkl'
 if not os.path.exists(infile_all):
     infiles = sorted(glob.glob('data/real/FLIGHTLIST_20190901_20200531/*.csv.gz'))
@@ -31,13 +32,11 @@ with open(infile_all, 'wb') as f:
 df_concat['day'] = pd.to_datetime(df_concat['day'])
 df_concat_for_grouping = df_concat[['day', 'origin', 'destination']]
 
-count_by_W_O_D = df_concat_for_grouping.groupby(
-                     [pd.Grouper(key='day', freq='1W'), 
-                      'origin', 'destination']
-                 ).size()
+count_by_W_O_D = df_concat_for_grouping.groupby([
+                     pd.Grouper(key='day', freq='1W'), 
+                     'origin', 'destination']).size()
 count_by_W_O_D = count_by_W_O_D.reset_index()
 count_by_W_O_D.rename({0: 'count'}, axis=1, inplace=True)
-
 count_by_W_O_D['day'] = count_by_W_O_D['day'].dt.date
 
 with open('data/real/FLIGHTLIST_20190901_20200531/week/count_od_by_week.pkl', 'wb') as f:
@@ -69,7 +68,6 @@ else:
 
 count_by_W_O_D_20190901_20200531['origin'] = [airports_dict_name2id[o] for o in count_by_W_O_D_20190901_20200531['origin']]
 count_by_W_O_D_20190901_20200531['destination'] = [airports_dict_name2id[o] for o in count_by_W_O_D_20190901_20200531['destination']]
-
 count_by_W_O_D_20190901_20200531.reset_index(drop=True, inplace=True)
 
 weeks_array = count_by_W_O_D_20190901_20200531['day'].unique()
